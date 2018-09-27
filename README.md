@@ -1,0 +1,1 @@
+# amd-paths-collection
