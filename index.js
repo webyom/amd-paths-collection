@@ -1,3 +1,6 @@
+const exec = require('child_process').exec;
+const path = require('path');
+const Vinyl = require('vinyl');
 const browserify = require('./browserify');
 
 module.exports = {
@@ -16,6 +19,22 @@ module.exports = {
   '@angular/router': {
     '@angular/router': 'bundles/router.umd',
     '@angular/router/upgrade': 'bundles/router-upgrade.umd'
+  },
+  'babel-cli': {
+    'babel-cli/external-helpers': function (cb) {
+      exec('./node_modules/.bin/babel-external-helpers -t umd', function (err, stdout) {
+        if (err) {
+          return cb(err);
+        }
+        const file = new Vinyl({
+          base: path.resolve('node_modules'),
+          cwd: process.cwd(),
+          path: path.resolve('node_modules/babel-cli/external-helpers.js'),
+          contents: new Buffer(stdout)
+        });
+        cb(null, file);
+      });
+    }
   },
   'babel-polyfill': 'dist/polyfill',
   'bootstrap': 'dist/js/bootstrap',
