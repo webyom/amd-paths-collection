@@ -1,6 +1,4 @@
-const path = require('path');
-const Vinyl = require('vinyl');
-const browserify = require('browserify');
+const browserify = require('./browserify');
 
 module.exports = {
   '@angular/animations': {
@@ -22,9 +20,15 @@ module.exports = {
   'babel-polyfill': 'dist/polyfill',
   'bootstrap': 'dist/js/bootstrap',
   'core-js': 'client/core',
+  'invariant': function (cb) {
+    browserify('invariant/browser.js', 'invariant', cb);
+  },
   'jsbarcode': 'dist/JsBarcode.all',
   'mobx': 'lib/mobx.umd',
   'mobx-state-tree': 'dist/mobx-state-tree.umd',
+  'moment-precise-range': function (cb) {
+    browserify('moment-precise-range/index.js', 'momentPreciseRange', cb);
+  },
   'pdfmake': 'build/pdfmake',
   'prop-types': function (cb) {
     if (process.env.NODE_ENV === 'production') {
@@ -48,24 +52,18 @@ module.exports = {
     }
   },
   'react-router': 'umd/ReactRouter',
+  'reflux-promise': function (cb) {
+    browserify('reflux-promise/lib/index.js', 'refluxPromise', cb);
+  },
   'rxjs': {
     'rxjs': 'bundles/rxjs.umd',
     'rxjs/operators': function (cb) {
-      filePath = path.resolve('node_modules/rxjs/operators/index.js');
-      browserify(filePath, {standalone: 'rxjs.operators'}).bundle(function (err, content) {
-        if (err) {
-          return cb(err);
-        }
-        const file = new Vinyl({
-          base: path.resolve('node_modules'),
-          cwd: process.cwd(),
-          path: path.resolve(path.dirname(filePath), 'operators.js'),
-          contents: content
-        });
-        cb(null, file);
-      });
+      browserify('rxjs/operators/index.js', 'rxjsOperators', cb, 'operators.js');
     }
   },
   'socket.io-client': 'dist/socket.io',
+  'warning': function (cb) {
+    browserify('warning/browser.js', 'warning', cb);
+  },
   'xlsx': 'dist/xlsx.full.min'
 };
