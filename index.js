@@ -39,6 +39,9 @@ module.exports = {
   'babel-polyfill': 'dist/polyfill',
   'bootstrap': 'dist/js/bootstrap',
   'core-js': 'client/core',
+  'float-math': function (cb) {
+    browserify('float-math/index.js', 'float-math', cb);
+  },
   'invariant': function (cb) {
     browserify('invariant/browser.js', 'invariant', cb);
   },
