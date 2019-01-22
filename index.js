@@ -22,7 +22,7 @@ module.exports = {
   },
   'babel-cli': {
     'babel-cli/external-helpers': function (cb) {
-      exec('./node_modules/.bin/babel-external-helpers -t umd', function (err, stdout) {
+      exec('./node_modules/babel-cli/bin/babel-external-helpers.js -t umd', function (err, stdout) {
         if (err) {
           return cb(err);
         }
